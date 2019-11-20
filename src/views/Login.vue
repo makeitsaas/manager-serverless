@@ -1,8 +1,29 @@
+<style scoped>
+pre {
+  background: #ddd;
+  padding: 10px 20px;
+  white-space: normal;
+  word-break: break-word;
+}
+</style>
+
 <template>
   <div class="auth-page">
     <div class="container page">
       <div class="row">
-        <button v-on:click="openModal">Ici Netlify</button>
+        <h4>User:</h4>
+        <pre>{{ user }}</pre>
+      </div>
+      <div class="row">
+        <button v-on:click="openModal">Login</button>
+        <button v-on:click="logout">Logout</button>
+        <button v-on:click="verify">Verify</button>
+
+        <div v-if="verifyCurl">
+          <hr />
+          <h5>cURL command:</h5>
+          <pre>{{ verifyCurl }}</pre>
+        </div>
       </div>
       <div class="row" style="display:none">
         <div class="col-md-6 offset-md-3 col-xs-12">
@@ -47,8 +68,8 @@ import { mapState } from "vuex";
 import { LOGIN } from "@/store/actions.type";
 import * as netlifyIdentity from "netlify-identity-widget";
 
+/*
 const loadNetlify = () => {
-  console.log("we do something");
   netlifyIdentity.init();
 
   netlifyIdentity.open(); // open the modal
@@ -73,13 +94,16 @@ const loadNetlify = () => {
   // sync between your state and the widget’s state.
   netlifyIdentity.gotrue;
 };
+*/
 
 export default {
   name: "RwvLogin",
   data() {
     return {
       email: null,
-      password: null
+      password: null,
+      user: null,
+      verifyCurl: null
     };
   },
   methods: {
@@ -89,11 +113,35 @@ export default {
         .then(() => this.$router.push({ name: "home" }));
     },
     openModal() {
-      loadNetlify();
+      netlifyIdentity.open("login");
+    },
+    logout() {
+      netlifyIdentity.logout();
+    },
+    verify() {
+      //https://github.com/netlify/gotrue
+      console.log("verify user");
+      this.verifyCurl = `curl -H "Authorization: Bearer ${this.user.token.access_token}" https://cocky-bohr-71d33d.netlify.com/.netlify/identity/user`;
     }
   },
   mounted() {
-    console.log("vue is ready");
+    netlifyIdentity.on(
+      "init",
+      user => (console.log("init", user), (this.user = user))
+    );
+    netlifyIdentity.on(
+      "login",
+      user => (console.log("login", user), (this.user = user))
+    );
+    netlifyIdentity.on("logout", () => console.log("Logged out"));
+    netlifyIdentity.on("error", err => console.error("Error", err));
+    netlifyIdentity.on("open", () => console.log("Widget opened"));
+    netlifyIdentity.on("close", () => console.log("Widget closed"));
+
+    netlifyIdentity.init();
+    const user = netlifyIdentity.currentUser();
+    console.log("current user", user);
+    window.myUser = user;
   },
   computed: {
     ...mapState({
