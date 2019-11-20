@@ -2,7 +2,7 @@
   <div class="auth-page">
     <div class="container page">
       <div class="row">
-        <div id="netlify-modal-button">Ici Netlify</div>
+        <button v-on:click="openModal">Ici Netlify</button>
       </div>
       <div class="row" style="display:none">
         <div class="col-md-6 offset-md-3 col-xs-12">
@@ -48,9 +48,8 @@ import { LOGIN } from "@/store/actions.type";
 import * as netlifyIdentity from "netlify-identity-widget";
 
 const loadNetlify = () => {
-  netlifyIdentity.init({
-    container: "#netlify-modal" // defaults to document.body,
-  });
+  console.log("we do something");
+  netlifyIdentity.init();
 
   netlifyIdentity.open(); // open the modal
   netlifyIdentity.open("login"); // open the modal to the login tab
@@ -88,10 +87,13 @@ export default {
       this.$store
         .dispatch(LOGIN, { email, password })
         .then(() => this.$router.push({ name: "home" }));
+    },
+    openModal() {
+      loadNetlify();
     }
   },
   mounted() {
-    loadNetlify();
+    console.log("vue is ready");
   },
   computed: {
     ...mapState({
