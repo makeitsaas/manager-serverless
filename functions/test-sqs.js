@@ -1,5 +1,10 @@
 const AWS = require("aws-sdk");
-const { AWS_IAM_ID, AWS_IAM_SECRET, AWS_SQS_QUEUE_URL } = process.env;
+const {
+  AWS_IAM_ID,
+  AWS_IAM_SECRET,
+  AWS_SQS_QUEUE_URL,
+  ADMIN_EMAIL
+} = process.env;
 
 AWS.config.update({
   region: "eu-central-1",
@@ -10,7 +15,7 @@ AWS.config.update({
 exports.handler = function(event, context, callback) {
   const { user } = context.clientContext;
 
-  if (user) {
+  if (user && user.email === ADMIN_EMAIL) {
     if (AWS_IAM_ID && AWS_IAM_SECRET && AWS_SQS_QUEUE_URL) {
       const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
       const params = {
