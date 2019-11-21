@@ -1,6 +1,12 @@
 const AWS = require("aws-sdk");
 const { AWS_IAM_ID, AWS_IAM_SECRET, ADMIN_EMAIL } = process.env;
 
+const corsHeaders = {
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization"
+};
+
 const DYNAMODB_TABLE_NAME = "DEPLOYER_ORDERS";
 const DYNAMO_DB_COLUMNS = [
   "UserUuid",
@@ -87,6 +93,7 @@ exports.handler = (event, context, callback) => {
       .then(ordersList =>
         callback(null, {
           statusCode: 200,
+          headers: corsHeaders,
           body: JSON.stringify({
             orders: ordersList
           })
@@ -110,13 +117,7 @@ const optionRedirect = (event, context, callback) => {
   if (process.env.ENABLE_CORS && event.httpMethod === "OPTIONS") {
     const response = {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Methods":
-          "GET, POST, OPTIONS, PUT, PATCH, DELETE",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers":
-          "Origin, Content-Type, Accept, Authorization"
-      },
+      headers: corsHeaders,
       body: JSON.stringify({ message: "You can use CORS" })
     };
     callback(null, response);
