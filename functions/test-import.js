@@ -1,4 +1,4 @@
-import { corsHeaders } from "./lib/cors-headers";
+const corsHeaders = require("./lib/cors-headers");
 
 exports.handler = function(event, context, callback) {
   // your server-side functionality
