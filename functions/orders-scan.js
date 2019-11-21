@@ -1,11 +1,6 @@
-const AWS = require("aws-sdk");
-const { AWS_IAM_ID, AWS_IAM_SECRET, ADMIN_EMAIL } = process.env;
-
-const corsHeaders = {
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE",
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization"
-};
+const { ADMIN_EMAIL } = process.env;
+const corsHeaders = require("./lib/cors-headers");
+const myAws = require("./lib/aws");
 
 const DYNAMODB_TABLE_NAME = "DEPLOYER_ORDERS";
 const DYNAMO_DB_COLUMNS = [
@@ -17,13 +12,7 @@ const DYNAMO_DB_COLUMNS = [
   "UpdatedAt"
 ];
 
-AWS.config.update({
-  region: "eu-central-1",
-  accessKeyId: AWS_IAM_ID,
-  secretAccessKey: AWS_IAM_SECRET
-});
-
-const ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+const ddb = myAws.getDynamoDBClient();
 
 const params = {
   ExpressionAttributeValues: {
