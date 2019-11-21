@@ -65,6 +65,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { LOGOUT, UPDATE_USER } from "@/store/actions.type";
+import { getToken } from "@/common/jwt.service";
 
 export default {
   name: "RwvSettings",
@@ -80,7 +81,10 @@ export default {
     },
     logout() {
       this.$store.dispatch(LOGOUT).then(() => {
-        this.$router.push({ name: "home" });
+        setTimeout(() => {
+          console.log("after timeout token", getToken());
+          this.$router.push({ name: "home" });
+        }, 400);
       });
     }
   }

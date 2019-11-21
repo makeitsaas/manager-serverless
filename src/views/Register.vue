@@ -73,7 +73,10 @@ export default {
           password: this.password,
           username: this.username
         })
-        .then(() => this.$router.push({ name: "home" }));
+        .then(() => {
+          alert("Email sent");
+          this.$router.push({ name: "home" });
+        });
     }
   }
 };

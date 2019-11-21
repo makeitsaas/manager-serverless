@@ -11,21 +11,6 @@ pre {
   <div class="auth-page">
     <div class="container page">
       <div class="row">
-        <h4>User:</h4>
-        <pre>{{ user }}</pre>
-      </div>
-      <div class="row">
-        <button v-on:click="openModal">Login</button>
-        <button v-on:click="logout">Logout</button>
-        <button v-on:click="verify">Verify</button>
-
-        <div v-if="verifyCurl">
-          <hr />
-          <h5>cURL command:</h5>
-          <pre>{{ verifyCurl }}</pre>
-        </div>
-      </div>
-      <div class="row" style="display:none">
         <div class="col-md-6 offset-md-3 col-xs-12">
           <h1 class="text-xs-center">Sign in</h1>
           <p class="text-xs-center">
@@ -34,7 +19,7 @@ pre {
             </router-link>
           </p>
           <ul v-if="errors" class="error-messages">
-            <li v-for="(v, k) in errors" :key="k">{{ k }} {{ v | error }}</li>
+            <li v-for="(v, k) in errors" :key="k">{{ v.message || v }}</li>
           </ul>
           <form @submit.prevent="onSubmit(email, password)">
             <fieldset class="form-group">
@@ -64,7 +49,7 @@ pre {
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { LOGIN } from "@/store/actions.type";
 import * as netlifyIdentity from "netlify-identity-widget";
 
@@ -102,7 +87,6 @@ export default {
     return {
       email: null,
       password: null,
-      user: null,
       verifyCurl: null
     };
   },
@@ -112,38 +96,16 @@ export default {
         .dispatch(LOGIN, { email, password })
         .then(() => this.$router.push({ name: "home" }));
     },
-    openModal() {
-      netlifyIdentity.open("login");
-    },
     logout() {
       netlifyIdentity.logout();
-    },
-    verify() {
-      //https://github.com/netlify/gotrue
-      console.log("verify user");
-      this.verifyCurl = `curl -H "Authorization: Bearer ${this.user.token.access_token}" https://cocky-bohr-71d33d.netlify.com/.netlify/identity/user`;
     }
   },
   mounted() {
-    netlifyIdentity.on(
-      "init",
-      user => (console.log("init", user), (this.user = user))
-    );
-    netlifyIdentity.on(
-      "login",
-      user => (console.log("login", user), (this.user = user))
-    );
-    netlifyIdentity.on("logout", () => console.log("Logged out"));
-    netlifyIdentity.on("error", err => console.error("Error", err));
-    netlifyIdentity.on("open", () => console.log("Widget opened"));
-    netlifyIdentity.on("close", () => console.log("Widget closed"));
-
-    netlifyIdentity.init();
-    const user = netlifyIdentity.currentUser();
-    console.log("current user", user);
-    window.myUser = user;
+    console.log("state currentUser", this.currentUser);
+    console.log("state isAuthenticated", this.isAuthenticated);
   },
   computed: {
+    ...mapGetters(["currentUser", "isAuthenticated"]),
     ...mapState({
       errors: state => state.auth.errors
     })

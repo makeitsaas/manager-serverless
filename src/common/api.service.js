@@ -4,6 +4,12 @@ import VueAxios from "vue-axios";
 import JwtService from "@/common/jwt.service";
 import { API_URL } from "@/common/config";
 
+const configNoAuthorization = {
+  headers: {
+    Authorization: ""
+  }
+};
+
 const ApiService = {
   init() {
     Vue.use(VueAxios, axios);
@@ -13,7 +19,7 @@ const ApiService = {
   setHeader() {
     Vue.axios.defaults.headers.common[
       "Authorization"
-    ] = `Token ${JwtService.getToken()}`;
+    ] = `Bearer ${JwtService.getToken()}`;
   },
 
   query(resource, params) {
@@ -23,9 +29,11 @@ const ApiService = {
   },
 
   get(resource, slug = "") {
-    return Vue.axios.get(`${resource}/${slug}`).catch(error => {
-      throw new Error(`[RWV] ApiService ${error}`);
-    });
+    return Vue.axios
+      .get(`${resource}/${slug}`, configNoAuthorization)
+      .catch(error => {
+        throw new Error(`[RWV] ApiService ${error}`);
+      });
   },
 
   post(resource, params) {
@@ -58,7 +66,8 @@ export const TagsService = {
 export const ArticlesService = {
   query(type, params) {
     return ApiService.query("articles" + (type === "feed" ? "/feed" : ""), {
-      params: params
+      params: params,
+      ...configNoAuthorization
     });
   },
   get(slug) {
