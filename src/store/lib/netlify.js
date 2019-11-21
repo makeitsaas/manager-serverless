@@ -48,10 +48,16 @@ const identity = {
   },
   getNetlifyBaseUrl() {
     try {
-      return netlifyIdentity.gotrue.api.apiURL.replace(
+      const baseUrl = netlifyIdentity.gotrue.api.apiURL.replace(
         "/.netlify/identity",
         ""
       );
+
+      if (baseUrl.length > 1) {
+        return baseUrl;
+      } else {
+        return window.location.origin;
+      }
     } catch (e) {
       return window.location.origin;
     }
