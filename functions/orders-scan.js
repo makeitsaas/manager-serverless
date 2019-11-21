@@ -76,6 +76,10 @@ const parseReport = stringReport => {
 };
 
 exports.handler = (event, context, callback) => {
+  if (optionRedirect(event, context, callback)) {
+    return;
+  }
+
   const { user } = context.clientContext;
 
   if (user && user.email === ADMIN_EMAIL) {
@@ -100,4 +104,21 @@ exports.handler = (event, context, callback) => {
       body: "Forbidden"
     });
   }
+};
+
+const optionRedirect = (event, context, callback) => {
+  if (process.env.ENABLE_CORS && event.httpMethod === "OPTIONS") {
+    const response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers":
+          "Origin, X-Requested-With, Content-Type, Accept"
+      },
+      body: JSON.stringify({ message: "You can use CORS" })
+    };
+    callback(null, response);
+    return true;
+  }
+  return false;
 };
