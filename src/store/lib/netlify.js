@@ -46,6 +46,16 @@ const identity = {
       return Promise.resolve();
     }
   },
+  getNetlifyBaseUrl() {
+    try {
+      return netlifyIdentity.gotrue.api.apiURL.replace(
+        "/.netlify/identity",
+        ""
+      );
+    } catch (e) {
+      return window.location.origin;
+    }
+  },
   getJWT() {
     const gotrueUser = netlifyIdentity.currentUser();
 
@@ -57,12 +67,10 @@ const identity = {
 
 const api = {
   getMe() {
-    return axios
-      .get(`https://cocky-bohr-71d33d.netlify.com/.netlify/identity/user`)
-      .then(response => {
-        console.log(`get me response`, response);
-        return response.data;
-      });
+    const baseURL = identity.getNetlifyBaseUrl();
+    return axios.get(`${baseURL}/.netlify/identity/user`).then(response => {
+      return response.data;
+    });
   }
 };
 
