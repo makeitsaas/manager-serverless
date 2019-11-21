@@ -113,9 +113,9 @@ const optionRedirect = (event, context, callback) => {
       headers: {
         "Access-Control-Allow-Methods":
           "GET, POST, OPTIONS, PUT, PATCH, DELETE",
-        "Access-Control-Allow-Origin": "*"
-        // "Access-Control-Allow-Headers":
-        //   "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers":
+          "Origin, Content-Type, Accept, Authorization"
       },
       body: JSON.stringify({ message: "You can use CORS" })
     };
