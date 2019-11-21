@@ -21,7 +21,9 @@
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <button @click="scan" class="btn btn-primary">
+                Do Something
+              </button>
             </div>
           </div>
         </div>
@@ -82,11 +84,17 @@
 import { mapGetters } from "vuex";
 import RwvTag from "@/components/VTag";
 import { FETCH_TAGS } from "@/store/actions.type";
+import OrderService from "@/common/order.service";
 
 export default {
   name: "home",
   components: {
     RwvTag
+  },
+  methods: {
+    scan() {
+      OrderService.scan().then(data => console.log("data", data));
+    }
   },
   mounted() {
     this.$store.dispatch(FETCH_TAGS);
