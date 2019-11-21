@@ -3,11 +3,31 @@
     <div class="banner">
       <div class="container">
         <h1 class="logo-font">Make it SaaS</h1>
-        <p>A place to share your knowledge.</p>
+        <p>A place to launch your applications.</p>
       </div>
     </div>
     <div class="container page">
       <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <img
+              class="card-img-top"
+              src="/img/icons/apple-touch-icon-180x180.png"
+              alt="Card image cap"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Feed wrapper -->
+      <!--div class="row">
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
@@ -52,7 +72,8 @@
             </div>
           </div>
         </div>
-      </div>
+      </div-->
+      <!-- end Feed wrapper -->
     </div>
   </div>
 </template>
