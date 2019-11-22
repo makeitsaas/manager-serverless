@@ -59,7 +59,9 @@
       </div>
     </div>
     <div class="card-footer">
-      <small class="text-muted">Last updated 3 mins ago</small>
+      <small class="text-muted"
+        >Last updated {{ order.UpdatedAt | lastModified }}</small
+      >
     </div>
   </div>
 </template>
@@ -69,6 +71,7 @@ pre {
   background: #f0f0f0;
   padding: 0.5em 1em;
 }
+
 button {
   margin-right: 0.5em;
 }
@@ -85,6 +88,20 @@ export default {
   filters: {
     date: utcDate => {
       return moment(utcDate).format("DD/MM/YYYY [at] hh:mm:ss");
+    },
+    lastModified: utcDate => {
+      const hours = moment().diff(utcDate, "hours");
+      const minutes = moment().diff(utcDate, "minutes");
+
+      if (minutes === 0) {
+        return `few seconds ago`;
+      } else if (minutes < 60) {
+        return `${minutes} minutes ago`;
+      } else if (hours < 49) {
+        return `${hours} hours ago`;
+      } else {
+        return `on  ${moment(utcDate).format("DD/MM/YYYY")}`;
+      }
     }
   }
 };
