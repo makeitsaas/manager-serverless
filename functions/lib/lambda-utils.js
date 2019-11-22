@@ -1,5 +1,7 @@
+const parsers = require("./parsers");
+
 module.exports = {
-  parseBody: request => {
-    console.log("request", request);
+  parseBody: requestEvent => {
+    return parsers.json(requestEvent.body) || {};
   }
 };
