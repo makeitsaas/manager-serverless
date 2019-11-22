@@ -7,22 +7,13 @@
       <ul v-if="!isAuthenticated" class="nav navbar-nav pull-xs-right">
         <li class="nav-item">
           <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'home' }"
-          >
-            Home
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
+            class="nav-link btn btn-primary"
             active-class="active"
             exact
             :to="{ name: 'login' }"
           >
-            <i class="ion-compose"></i>Sign in
+            <i class="ion-log-in"></i>
+            &nbsp;Sign in
           </router-link>
         </li>
         <li class="nav-item">
@@ -32,28 +23,20 @@
             exact
             :to="{ name: 'register' }"
           >
-            <i class="ion-compose"></i>Sign up
+            <i class="ion-person-add"></i>
+            &nbsp;Register
           </router-link>
         </li>
       </ul>
       <ul v-else class="nav navbar-nav pull-xs-right">
         <li class="nav-item">
           <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'home' }"
-          >
-            Home
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
+            class="nav-link btn btn-primary"
             active-class="active"
             :to="{ name: 'article-edit' }"
           >
-            <i class="ion-compose"></i>&nbsp;New Article
+            <i class="ion-plus"></i>
+            &nbsp;Order
           </router-link>
         </li>
         <li class="nav-item">
@@ -66,19 +49,21 @@
             <i class="ion-gear-a"></i>&nbsp;Settings
           </router-link>
         </li>
-        <li class="nav-item" v-if="currentUser.username">
+        <!--
+        <li class="nav-item" v-if="currentUser.email">
           <router-link
             class="nav-link"
             active-class="active"
             exact
             :to="{
               name: 'profile',
-              params: { username: currentUser.username }
+              params: { username: currentUser.email }
             }"
           >
-            {{ currentUser.username }}
+            Me
           </router-link>
         </li>
+        -->
       </ul>
     </div>
   </nav>
