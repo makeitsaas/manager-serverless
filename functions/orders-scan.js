@@ -1,4 +1,4 @@
-const myAws = require("./aws");
+const myAws = require("./lib/aws");
 const corsHeaders = require("./lib/cors-headers");
 const corsRedirectMiddleware = require("./lib/cors-redirect-middleware");
 const authenticationAdminMiddleware = require("./lib/authentication-admin-middleware");
