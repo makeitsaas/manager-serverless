@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="container page">
-      <div class="row">
+      <div class="row" v-if="!isAuthenticated">
         <div class="col-md-12">
           <div class="card">
             <img
@@ -18,17 +18,16 @@
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
               <p class="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
+                Explication de comment ça marche
               </p>
               <button @click="doSomething" class="btn btn-primary">
-                Do Something
+                Login
               </button>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row" v-if="isAuthenticated">
         <div class="col-md-12">
           <MisOrdersList></MisOrdersList>
         </div>
@@ -89,7 +88,6 @@
 import { mapGetters } from "vuex";
 import RwvTag from "@/components/VTag";
 import MisOrdersList from "@/components/OrdersList";
-import { FETCH_TAGS } from "@/store/actions.type";
 
 export default {
   name: "home",
@@ -99,17 +97,15 @@ export default {
   },
   methods: {
     doSomething() {
-      alert("You rock!");
+      this.$router.push({ name: "login" });
     }
   },
-  mounted() {
-    this.$store.dispatch(FETCH_TAGS);
-  },
+  mounted() {},
   computed: {
-    ...mapGetters(["isAuthenticated", "tags"]),
-    tag() {
-      return this.$route.params.tag;
-    }
+    ...mapGetters(["isAuthenticated"])
+    // tag() {
+    //   return this.$route.params.tag;
+    // }
   }
 };
 </script>

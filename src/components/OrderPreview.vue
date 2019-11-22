@@ -1,0 +1,91 @@
+<template>
+  <div class="card">
+    <div class="card-header">
+      Order {{ order.OrderUuid }}
+      <span class="badge badge-secondary">In progress</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <!--<div class="alert alert-secondary" role="alert">
+            Order in progress
+          </div>-->
+          <!--                  <h5 class="card-title">Special title treatment</h5>-->
+          <p class="card-text">
+            This is demo view of an deployment order
+          </p>
+          <table class="table">
+            <tbody>
+              <tr>
+                <th scope="row">CreatedAt</th>
+                <td>{{ order.CreatedAt | date }}</td>
+              </tr>
+              <tr>
+                <th scope="row">UpdatedAt</th>
+                <td>{{ order.UpdatedAt | date }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Report</th>
+                <td>{{ order.OrderReport }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="alert alert-info" role="alert">
+            <i class="ion-information-circled"></i>&nbsp; Url of the updated
+            environment will be available here
+          </div>
+
+          <button
+            disabled
+            class="btn btn-primary"
+            type="button"
+            title="Not implement yet"
+          >
+            View progress
+          </button>
+          <button
+            disabled
+            class="btn btn-secondary"
+            type="button"
+            title="Not implement yet"
+          >
+            Relaunch
+          </button>
+        </div>
+        <div class="col-md-6">
+          <pre>{{ order.OrderContent.trim() }}</pre>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+pre {
+  background: #f0f0f0;
+  padding: 0.5em 1em;
+}
+button {
+  margin-right: 0.5em;
+}
+</style>
+
+<script>
+import moment from "moment";
+
+export default {
+  name: "MisOrderPreview",
+  props: {
+    order: { type: Object, required: true }
+  },
+  filters: {
+    date: utcDate => {
+      return moment(utcDate).format("DD/MM/YYYY [at] hh:mm:ss");
+    }
+  }
+};
+</script>
