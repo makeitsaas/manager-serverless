@@ -21,11 +21,16 @@
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </p>
-              <button @click="scan" class="btn btn-primary">
+              <button @click="doSomething" class="btn btn-primary">
                 Do Something
               </button>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <MisOrdersList></MisOrdersList>
         </div>
       </div>
       <!-- Feed wrapper -->
@@ -83,17 +88,18 @@
 <script>
 import { mapGetters } from "vuex";
 import RwvTag from "@/components/VTag";
+import MisOrdersList from "@/components/OrdersList";
 import { FETCH_TAGS } from "@/store/actions.type";
-import OrderService from "@/common/order.service";
 
 export default {
   name: "home",
   components: {
+    MisOrdersList,
     RwvTag
   },
   methods: {
-    scan() {
-      OrderService.scan().then(data => console.log("data", data));
+    doSomething() {
+      alert("You rock!");
     }
   },
   mounted() {

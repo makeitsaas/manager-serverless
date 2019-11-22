@@ -11,6 +11,7 @@ export const FAVORITE_ADD = "addFavorite";
 export const FAVORITE_REMOVE = "removeFavorite";
 export const FETCH_ARTICLE = "fetchArticle";
 export const FETCH_ARTICLES = "fetchArticles";
+export const FETCH_ORDERS = "fetchOrders";
 export const FETCH_COMMENTS = "fetchComments";
 export const FETCH_PROFILE = "fetchProfile";
 export const FETCH_PROFILE_FOLLOW = "fetchProfileFollow";

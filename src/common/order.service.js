@@ -17,7 +17,9 @@ export const OrderService = {
     const config = generateConfig();
     console.log(JwtService.getToken());
     console.log("config", config);
-    return Vue.axios.get(`.netlify/functions/orders-scan`, config);
+    return Vue.axios
+      .get(`.netlify/functions/orders-scan`, config)
+      .then(response => response.data.orders);
   }
 };
 
