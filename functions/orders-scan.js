@@ -12,8 +12,6 @@ exports.handler = (event, context, callback) => {
     return;
   }
 
-  console.log("try scan with imports 3");
-
   dynamoOrdersTable
     .scan()
     .then(ordersList =>
