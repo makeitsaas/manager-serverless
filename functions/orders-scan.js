@@ -1,8 +1,7 @@
-const myAws = require("./lib/aws");
 const corsHeaders = require("./lib/cors-headers");
 const corsRedirectMiddleware = require("./lib/cors-redirect-middleware");
 const authenticationAdminMiddleware = require("./lib/authentication-admin-middleware");
-const dynamoOrdersTable = require("./lib/dynamodb-orders")(myAws);
+const dynamoOrdersTable = require("./lib/dynamodb-orders");
 
 exports.handler = (event, context, callback) => {
   if (corsRedirectMiddleware(event, context, callback)) {
@@ -13,7 +12,7 @@ exports.handler = (event, context, callback) => {
     return;
   }
 
-  console.log("try scan with imports 2");
+  console.log("try scan with imports 3");
 
   dynamoOrdersTable
     .scan()
