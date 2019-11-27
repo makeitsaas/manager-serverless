@@ -1,8 +1,15 @@
 <template>
   <div class="editor-page">
     <div class="container page">
+      <div class="row" v-if="error">
+        <div class="col-md-12">
+          <div class="alert alert-danger">
+            <span>{{ error.message }}</span>
+          </div>
+        </div>
+      </div>
       <div class="row">
-        <div class="col-md-10 offset-md-1 col-xs-12">
+        <div class="col-md-12 col-xs-12">
           <form @submit.prevent="submit()">
             <fieldset :disabled="isLoading">
               <fieldset class="form-group">
@@ -12,15 +19,6 @@
                   v-model="order.description"
                   placeholder="Add a comment about this order (optional)"
                 />
-              </fieldset>
-              <fieldset v-if="false" class="form-group">
-                <textarea
-                  class="form-control my-code-textarea"
-                  rows="8"
-                  v-model="order.content"
-                  placeholder="Write your order"
-                >
-                </textarea>
               </fieldset>
               <fieldset class="form-group">
                 <codemirror
@@ -44,11 +42,14 @@
           </form>
         </div>
       </div>
+      <hr />
       <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-10 col-xs-12">
+          <h3>Sample :</h3>
+          <br />
           <pre>{{ sampleOrder }}</pre>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-12">
           <button class="btn btn-primary" @click="useSample(sampleOrder)">
             Use sample
           </button>
@@ -61,6 +62,11 @@
 <style scoped>
 .my-code-textarea {
   font-family: Menlo, Monaco, Consolas, liberation mono, courier new, monospace;
+}
+</style>
+<style>
+.CodeMirror {
+  height: 500px !important;
 }
 </style>
 
@@ -110,15 +116,30 @@ import "codemirror/addon/fold/indent-fold.js";
 import "codemirror/addon/fold/markdown-fold.js";
 import "codemirror/addon/fold/xml-fold.js";
 
+// lint
+import "codemirror/addon/lint/lint.css";
+import "codemirror/addon/lint/lint.js";
+// import "codemirror/addon/lint/javascript-lint.js";
+// import "codemirror/addon/lint/yaml-lint.js";
+import "@/common/editor/addon/order-yml-lint";
+
 const optionsDemo = {
-  tabSize: 4,
+  tabSize: 2,
   styleActiveLine: false,
   lineNumbers: true,
   styleSelectedText: false,
+  size: {
+    height: 1000
+  },
   line: true,
   foldGutter: true,
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  gutters: [
+    "CodeMirror-linenumbers",
+    "CodeMirror-foldgutter",
+    "CodeMirror-lint-markers"
+  ],
   highlightSelectionMatches: { showToken: /\w/, annotateScrollbar: true },
+  // mode: "text/javascript",
   mode: "text/x-yaml",
   // hint.js options
   hintOptions: {
@@ -130,7 +151,8 @@ const optionsDemo = {
   matchBrackets: true,
   showCursorWhenSelecting: true,
   theme: "monokai",
-  extraKeys: { Ctrl: "autocomplete" }
+  extraKeys: { Ctrl: "autocomplete" },
+  lint: true
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -153,6 +175,7 @@ export default {
       order: {},
       code: "",
       isLoading: false,
+      error: null,
       sampleOrder: order1,
       cmOptions: optionsDemo
     };
@@ -161,8 +184,12 @@ export default {
     submit() {
       console.log("submit", Object.assign({}, this.order));
       OrderService.create(this._data.order.content)
-        .then(response => console.log("success", response))
-        .catch(err => console.log("error", err));
+        .then(order => {
+          console.log(order);
+          alert("success");
+          this.$router.push("/");
+        })
+        .catch(err => (console.log(err), (this._data.error = err)));
     },
     useSample(sample) {
       this._data.order.content = sample;
@@ -175,8 +202,9 @@ export default {
     onCmFocus(cm) {
       console.log("the editor is focus!", cm);
     },
+    // eslint-disable-next-line no-unused-vars
     onCmCodeChange(newCode) {
-      console.log("this is new code", newCode);
+      // console.log("this is new code", newCode);
       this._data.order.content = newCode;
     }
   }

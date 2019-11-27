@@ -27,7 +27,7 @@ export const OrderService = {
     };
     return Vue.axios
       .post(`.netlify/functions/orders-create`, { order: orderContent }, config)
-      .then(response => response.data.orders);
+      .then(response => response.data);
   }
 };
 
