@@ -71,6 +71,12 @@ export default new Router({
       path: "/editor/:slug?",
       props: true,
       component: () => import("@/views/ArticleEdit")
+    },
+    {
+      name: "order-create",
+      path: "/order/create",
+      props: true,
+      component: () => import("@/views/OrderCreate")
     }
   ]
 });

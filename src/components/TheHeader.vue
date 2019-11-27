@@ -33,7 +33,7 @@
           <router-link
             class="nav-link btn btn-primary"
             active-class="active"
-            :to="{ name: 'article-edit' }"
+            :to="{ name: 'order-create' }"
           >
             <i class="ion-plus"></i>
             &nbsp;Order

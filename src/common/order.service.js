@@ -20,6 +20,14 @@ export const OrderService = {
     return Vue.axios
       .get(`.netlify/functions/orders-scan`, config)
       .then(response => response.data.orders);
+  },
+  create(orderContent) {
+    const config = {
+      ...generateConfig()
+    };
+    return Vue.axios
+      .post(`.netlify/functions/orders-create`, { order: orderContent }, config)
+      .then(response => response.data.orders);
   }
 };
 

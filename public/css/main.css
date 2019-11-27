@@ -1,4 +1,6 @@
-.navbar-light .navbar-nav .nav-link.btn-primary {
+.navbar-light .navbar-nav .nav-link.btn-primary,
+.navbar-light .navbar-nav .nav-link.btn-primary:hover,
+.navbar-light .navbar-nav .nav-link.btn-primary:focus {
   color: #FFF;
 }
 
