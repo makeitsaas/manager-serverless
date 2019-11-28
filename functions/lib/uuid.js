@@ -1,4 +1,5 @@
+const uuidV1 = require("uuid/v1");
+
 module.exports = () => {
-  // todo : real function
-  return `${Math.floor(Math.random() * 1000000000)}`;
+  return uuidV1();
 };
