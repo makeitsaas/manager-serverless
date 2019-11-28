@@ -26,7 +26,9 @@
               </tr>
               <tr>
                 <th scope="row">Report</th>
-                <td>{{ order.OrderReport }}</td>
+                <td>
+                  <div class="report">{{ order.OrderReport }}</div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -76,6 +78,18 @@ pre {
 button,
 a {
   margin-right: 0.5em;
+}
+
+table {
+  width: 100%;
+}
+
+.report {
+  /*max-width: 400px;*/
+  overflow: hidden;
+  max-height: 100px;
+  /*white-space: nowrap;*/
+  text-overflow: ellipsis;
 }
 </style>
 
