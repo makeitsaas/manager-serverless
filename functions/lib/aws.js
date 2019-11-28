@@ -10,5 +10,8 @@ AWS.config.update({
 module.exports = {
   getDynamoDBClient: () => {
     return new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+  },
+  getSqsClient: () => {
+    return new AWS.SQS({ apiVersion: "2012-11-05" });
   }
 };

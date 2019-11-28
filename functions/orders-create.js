@@ -1,8 +1,10 @@
 const corsHeaders = require("./lib/cors-headers");
 const corsRedirectMiddleware = require("./lib/cors-redirect-middleware");
 const authenticationAdminMiddleware = require("./lib/authentication-admin-middleware");
-const dynamoOrdersTable = require("./lib/dynamodb-orders");
+const dynamoOrdersTable = require("./lib/aws-dynamodb-orders");
+const sqsOrderQueue = require("./lib/aws-sqs-orders");
 const lambdaUtils = require("./lib/lambda-utils");
+const uuid = require("./uuid");
 
 exports.handler = (event, context, callback) => {
   if (corsRedirectMiddleware(event, context, callback)) {
@@ -27,14 +29,22 @@ exports.handler = (event, context, callback) => {
     return;
   }
 
+  const orderUuid = uuid();
+  const orderContent = body.order;
+
   dynamoOrdersTable
-    .create(userUuid, body.order)
-    .then(ordersList =>
+    .create(orderUuid, userUuid, orderContent)
+    .then(createdOrder =>
+      sqsOrderQueue
+        .push(orderUuid, userUuid, orderContent)
+        .then(() => createdOrder)
+    )
+    .then(createdOrder =>
       callback(null, {
         statusCode: 200,
         headers: corsHeaders,
         body: JSON.stringify({
-          orders: ordersList
+          order: createdOrder
         })
       })
     )

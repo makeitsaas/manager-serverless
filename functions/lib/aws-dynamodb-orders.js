@@ -1,6 +1,5 @@
 const myAws = require("./aws");
 const parsers = require("./parsers");
-const uuid = require("./uuid");
 
 const DYNAMODB_TABLE_NAME = "DEPLOYER_ORDERS";
 const DYNAMO_DB_COLUMNS = [
@@ -12,7 +11,7 @@ const DYNAMO_DB_COLUMNS = [
   "UpdatedAt"
 ];
 
-const ddb = myAws.getDynamoDBClient();
+const dynamoClient = myAws.getDynamoDBClient();
 
 const scan = () => {
   const params = {
@@ -25,7 +24,7 @@ const scan = () => {
   };
 
   return new Promise((resolve, reject) => {
-    ddb.query(params, (err, data) => {
+    dynamoClient.query(params, (err, data) => {
       if (err) {
         reject(data);
       } else {
@@ -36,8 +35,8 @@ const scan = () => {
   });
 };
 
-const create = (userUuid, order) => {
-  const item = orderItem(userUuid, order);
+const create = (orderUuid, userUuid, order) => {
+  const item = orderItem(orderUuid, userUuid, order);
 
   const dynamoParams = {
     TableName: DYNAMODB_TABLE_NAME,
@@ -45,7 +44,7 @@ const create = (userUuid, order) => {
   };
 
   return new Promise((resolve, reject) => {
-    ddb.putItem(dynamoParams, (err, data) => {
+    dynamoClient.putItem(dynamoParams, (err, data) => {
       if (err) {
         reject(err);
       } else {
@@ -55,10 +54,10 @@ const create = (userUuid, order) => {
   });
 };
 
-const orderItem = (userUuid, order) => {
+const orderItem = (orderUuid, userUuid, order) => {
   return {
     UserUuid: { S: userUuid },
-    OrderUuid: { S: uuid() },
+    OrderUuid: { S: orderUuid },
     OrderContent: { S: order },
     OrderReport: { S: `{}` },
     CreatedAt: { S: NOW() },
@@ -71,12 +70,12 @@ const NOW = () => {
 };
 
 const parseElement = rawElement => ({
-  UserUuid: rawElement.UserUuid.S,
-  OrderUuid: rawElement.OrderUuid.S,
-  OrderContent: rawElement.OrderContent.S,
-  OrderReport: parsers.json(rawElement.OrderReport.S),
-  CreatedAt: parsers.date(rawElement.CreatedAt.S),
-  UpdatedAt: parsers.date(rawElement.UpdatedAt.S)
+  UserUuid: rawElement.UserUuid && rawElement.UserUuid.S,
+  OrderUuid: rawElement.OrderUuid && rawElement.OrderUuid.S,
+  OrderContent: rawElement.OrderContent && rawElement.OrderContent.S,
+  OrderReport: rawElement.OrderReport && parsers.json(rawElement.OrderReport.S),
+  CreatedAt: rawElement.CreatedAt && parsers.date(rawElement.CreatedAt.S),
+  UpdatedAt: rawElement.UpdatedAt && parsers.date(rawElement.UpdatedAt.S)
 });
 
 module.exports = {
