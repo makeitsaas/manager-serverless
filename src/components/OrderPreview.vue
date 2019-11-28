@@ -36,14 +36,15 @@
             environment will be available here
           </div>
 
-          <button
-            disabled
+          <router-link
             class="btn btn-primary"
-            type="button"
-            title="Not implement yet"
+            :to="{
+              name: 'order-detail',
+              params: { orderUuid: order.OrderUuid }
+            }"
           >
             View progress
-          </button>
+          </router-link>
           <button
             disabled
             class="btn btn-secondary"
@@ -72,7 +73,8 @@ pre {
   padding: 0.5em 1em;
 }
 
-button {
+button,
+a {
   margin-right: 0.5em;
 }
 </style>

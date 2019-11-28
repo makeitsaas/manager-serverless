@@ -73,6 +73,12 @@ export default new Router({
       component: () => import("@/views/ArticleEdit")
     },
     {
+      name: "order-detail",
+      path: "/orders/:orderUuid",
+      props: true,
+      component: () => import("@/views/OrderDetail")
+    },
+    {
       name: "order-create",
       path: "/order/create",
       props: true,
