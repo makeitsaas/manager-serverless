@@ -5,6 +5,7 @@ const sqsClient = myAws.getSqsClient();
 
 const push = (orderUuid, userUuid, orderContent) => {
   const parsedBody = {
+    Version: "v2",
     UserUuid: userUuid,
     OrderUuid: orderUuid,
     OrderContent: orderContent
