@@ -4,7 +4,7 @@ const authenticationAdminMiddleware = require("./lib/authentication-admin-middle
 const dynamoOrdersTable = require("./lib/aws-dynamodb-orders");
 const sqsOrderQueue = require("./lib/aws-sqs-orders");
 const lambdaUtils = require("./lib/lambda-utils");
-const uuid = require("./uuid");
+const uuid = require("./lib/uuid");
 
 exports.handler = (event, context, callback) => {
   if (corsRedirectMiddleware(event, context, callback)) {
