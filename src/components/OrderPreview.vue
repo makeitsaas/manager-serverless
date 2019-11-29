@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header">
       Order {{ order.OrderUuid }}
-      <span class="badge badge-secondary">In progress</span>
+      <span class="badge badge-secondary">{{ getOrderStatusName() }}</span>
     </div>
     <div class="card-body">
       <div class="row">
@@ -95,6 +95,7 @@ table {
 
 <script>
 import moment from "moment";
+import OrderUtilsService from "@/common/order-utils.service";
 
 export default {
   name: "MisOrderPreview",
@@ -118,6 +119,11 @@ export default {
       } else {
         return `on  ${moment(utcDate).format("DD/MM/YYYY")}`;
       }
+    }
+  },
+  methods: {
+    getOrderStatusName() {
+      return OrderUtilsService.getOrderStatusName(this.order.OrderReport);
     }
   }
 };
